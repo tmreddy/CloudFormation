@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Application Stack
+
+Parameters:
+  VPCId:
+    Type: String
+    Description: The ID of the VPC where the application will be deployed
+  PublicSubnetId:
+    Type: String
+    Description: The ID of the public subnet for the EC2 instance
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-09e6f87a47903347c   #Example AMI ID
+      KeyName: my-key-pair
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: '0'
+          SubnetId: !Ref PublicSubnetId
+          GroupSet:
+            - !Ref InstanceSecurityGroup
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access
+      VpcId: !Ref VPCId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
+
+Outputs:
+  InstanceId:
+    Value: !Ref MyEC2Instance
+    Description: The Instance ID of the EC2 instance created in the App Stack
+
+# aws cloudformation create-stack --stack-name app-stack --template-body file://app-stack-cf.yaml / 
+# --region=us-east-1 --parameters ParameterKey=VPCId,ParameterValue=vpc-0ba2ceb39dd28ad56 /
+# ParameterKey=PublicSubnetId,ParameterValue=subnet-0c469a6f9f902953c

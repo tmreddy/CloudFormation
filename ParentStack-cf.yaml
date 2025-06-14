@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: VPC Setup with Nested Stacks
+
+Resources:
+  VPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://public-cf-2025.s3.us-east-1.amazonaws.com/cf/vpc-stack-cf.yaml
+
+  AppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://public-cf-2025.s3.us-east-1.amazonaws.com/cf/app-stack-cf.yaml
+      Parameters:
+        VPCId: !GetAtt VPCStack.Outputs.VPCId
+        PublicSubnetId: !GetAtt VPCStack.Outputs.PublicSubnetId
+
+# aws s3 cp vpc-stack-cf.yaml s3://public-cf-2025/cf/vpc-stack-cf.yaml 
+# aws s3 cp app-stack-cf.yaml s3://public-cf-2025/cf/app-stack-cf.yaml 

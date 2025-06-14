@@ -1,0 +1,18 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example of Using SSM Parameter Store in Parameters
+
+Parameters:
+  DatabasePassword:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: The password for the database, stored in SSM Parameter Store
+    Default: DatabasePassword
+Resources:
+  MyDBInstance:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceClass: db.m7g.large
+      Engine: mysql
+      MasterUsername: admin
+      MasterUserPassword: !Ref DatabasePassword
+      AllocatedStorage: '20'

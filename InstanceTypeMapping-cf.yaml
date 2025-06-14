@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example of Mappings for Environment-Specific Configuration
+
+Mappings:
+  InstanceTypeMap:
+    Production:
+      InstanceType: t2.large
+    Staging:
+      InstanceType: t2.medium
+    Development:
+      InstanceType: t2.micro
+
+Parameters:
+  Environment:
+    Type: String
+    Default: Development
+    AllowedValues:
+      - Production
+      - Staging
+      - Development
+    Description: Select the environment type
+
+Resources:
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !FindInMap [InstanceTypeMap, !Ref Environment, InstanceType]
+      ImageId: ami-02457590d33d576c3   #Example AMI ID
+      KeyName: my-key-pair
+
+Outputs:
+  EC2InstanceId:
+    Description: The ID of the EC2 instance
+    Value: !Ref MyEC2Instance

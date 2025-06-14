@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Parent Stack with Nested Stacks
+
+Resources:
+  MyNestedStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: "https://public-cf-2025.s3.us-east-1.amazonaws.com/cf/NestedStack-cf.yaml"  # URL to the nested stack template
+      Parameters:
+        InstanceType: t2.micro
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: my-unique-bucket-name-cf-2025
+
+Outputs:
+  S3BucketName:
+    Description: The name of the S3 bucket
+    Value: !Ref MyS3Bucket
+
+ 
+# aws s3 mb s3://public-cf-2025/cf
+# aws s3 cp NestedStack-cf.yaml s3://public-cf-2025/cf/NestedStack-cf.yaml 
+# aws s3 mb s3://public-cf-$(date +%m-%d-%Y-)
+# aws cloudformation create-stack --stack-name nested-stack --template-body file://NestedStackParent-cf.yaml --region=us-east-1

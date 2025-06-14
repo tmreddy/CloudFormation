@@ -1,0 +1,22 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example of Importing an S3 Bucket in CloudFormation
+
+#for importing an existing s3 bucket, output section should not be there as it is not supported
+
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: import-cf-2025 
+
+# aws cloudformation create-change-set \
+#     --stack-name import-s3-stack --change-set-name ImportChangeSet \
+#     --change-set-type IMPORT \
+#     --template-body file://ImportS3-cf.yaml \
+#     --resources-to-import '[{"ResourceType":"AWS::S3::Bucket","LogicalResourceId":"MyS3Bucket","ResourceIdentifier":{"BucketName":"import-cf-2025"}}]'
+
+# aws s3 mb s3://import-cf-2025
+
+#aws cloudformation describe-change-set --change-set-name your-change-set-name --stack-name your-stack-name

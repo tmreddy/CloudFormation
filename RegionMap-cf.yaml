@@ -1,0 +1,21 @@
+Mappings:
+  RegionMap:
+    us-east-1:
+      AMI: ami-02457590d33d576c3   #Example AMI ID for us-east-1
+    us-west-1:
+      AMI: ami-0418306302097dbff   #Example AMI ID for us-west-1
+    eu-west-1:
+      AMI: ami-03400c3b73b5086e9   #Example AMI ID for eu-west-1
+
+Resources:
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t2.micro
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
+      KeyName: my-key-pair
+
+Outputs:
+  EC2InstanceId:
+    Description: The ID of the EC2 instance
+    Value: !Ref MyEC2Instance

@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example of Parameters with Allowed Values
+
+Parameters:
+  Environment:
+    Type: String
+    Default: development
+    AllowedValues:
+      - production
+      - staging
+      - development
+    Description: Select the environment type for the deployment
+
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub "my-drift-${Environment}-bucket-cf-2025"
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+Outputs:
+  S3BucketName:
+    Description: The name of the S3 bucket
+    Value: !Ref MyS3Bucket
