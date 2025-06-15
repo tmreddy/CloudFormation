@@ -1,13 +1,11 @@
-
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Example of List Parameters in CloudFormation
-aws ssm put-parameter --name "MySecureParameter" --value "SensitiveData" --type "SecureString"
 
 Parameters:
   SecurityGroupIds:
     Type: CommaDelimitedList
     Description: List of security group IDs to associate with the EC2 instance
-    Default: sg-04286fb397ccba073, sg-0cec3b40d13e25cf3
+    Default: sg-01b9e3397bbf1788b, sg-09daebbe014187471
 Resources:
   MyEC2Instance:
     Type: 'AWS::EC2::Instance'

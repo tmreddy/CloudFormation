@@ -1,4 +1,4 @@
-1AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: '2010-09-09'
 Description: Updated template for S3 bucket and EC2 instance.
 
 Resources:

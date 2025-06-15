@@ -25,7 +25,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: !FindInMap [InstanceTypeMap, !Ref Environment, InstanceType]
-      ImageId: ami-02457590d33d576c3   #Example AMI ID
+      ImageId: ami-02457590d33d576c3
       KeyName: my-key-pair
 
 Outputs:
