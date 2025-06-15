@@ -12,30 +12,30 @@ Parameters:
       - t2.medium
     ConstraintDescription: Must be a valid EC2 instance type.
 
-  Resources:
-    MyS3Bucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: my-unique-bucket-name-cf-2025
-
-  MyEC2Instance:
-    Type: AWS::EC2::Instance
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
     Properties:
-      InstanceType: !Ref InstanceType
-      ImageId: ami-02457590d33d576c3  #Example AMI ID (Amazon Linux 2)
-      KeyName: my-key-pair   # Replace with your key pair name
-      SecurityGroupIds:
-        - !Ref MySecurityGroup
+      BucketName: my-unique-bucket-name-cf-2025
 
   MySecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+    Type: 'AWS::EC2::SecurityGroup'
     Properties:
       GroupDescription: Enable SSH access
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '22'
           ToPort: '22'
-          CidrIp: 0.0.0.0/0   #Allow SSH from anywhere (not recommended for production)
+          CidrIp: 0.0.0.0/0   # Allow SSH from anywhere (not recommended for production)
+
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: ami-02457590d33d576c3  # Example AMI ID (Amazon Linux 2)
+      KeyName: my-key-pair   # Replace with your key pair name
+      SecurityGroupIds:
+        - !Ref MySecurityGroup
 
 Outputs:
   S3BucketName:
@@ -45,12 +45,3 @@ Outputs:
   EC2InstanceId:
     Description: The ID of the EC2 instance
     Value: !Ref MyEC2Instance
-
-
-Outputs:
-  S3BucketName:
-    Description: The name of the imported S3 bucket
-    Value: !Ref MyS3Bucket
-  S3BucketArn:
-    Description: The ARN of the imported S3 bucket
-    Value: !GetAtt MyS3Bucket.Arn
